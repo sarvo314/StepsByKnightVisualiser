@@ -33,27 +33,35 @@ COLORS = [
 
 
 # Define the dimensions of the chessboard
-BOARD_SIZE = 9
+BOARD_SIZE = None
 SQUARE_SIZE = 80
-WINDOW_SIZE = (BOARD_SIZE * SQUARE_SIZE, BOARD_SIZE * SQUARE_SIZE)
+WINDOW_SIZE = None
+window = None
+font = None
 
-# Initialize pygame
-pygame.init()
-
-# Initialize the font
-pygame.font.init()
-
-# Create a font object
-font = pygame.font.SysFont("Arial", 24)
-
-window = pygame.display.set_mode(WINDOW_SIZE)
-pygame.display.set_caption("Knight's Movement Visualizer")
-visualize_complete = False
+def initialiseParameter():
+	global window
+	global font
+	global WINDOW_SIZE
+	# Initialize pygame
+	pygame.init()
+	
+	# Initialize the font
+	pygame.font.init()
+	
+	# Create a font object
+	font = pygame.font.SysFont("Arial", 24)
+	
+	WINDOW_SIZE = (BOARD_SIZE * SQUARE_SIZE, BOARD_SIZE * SQUARE_SIZE)
+	window = pygame.display.set_mode(WINDOW_SIZE)
+	pygame.display.set_caption("Knight's Movement Visualizer")
+	visualize_complete = False
 
 
 
 # Function to draw the chessboard
 def draw_chessboard():
+	global BOARD_SIZE
 	for row in range(BOARD_SIZE):
 		for col in range(BOARD_SIZE):
 			if (row + col) % 2 == 0:
@@ -133,17 +141,24 @@ def visualize_movement(knight_pos, target_pos, knight_moves, count):
 # Driver code
 def main():
 	
-	KnightPos = (8, 8)
+	global BOARD_SIZE
+	BOARD_SIZE = int(input("Enter the board size: "))
+	kx = int(input("Enter knight's x position(should be less than board size - 1): "))
+	ky = int(input("Enter knight's y position(should be less than board size - 1): "))
+	KnightPos = (kx, ky)
 	# shouold be less than board size - 1
-	TargetPos = (0, 0)
-	# BOARD_SIZE = int(input("Enter the board size: "))
+	tx = int(input("Enter target x position(should be less than board size - 1): "))
+	ty = int(input("Enter target y position(should be less than board size - 1): "))
+	TargetPos = (tx, ty)
 	N = BOARD_SIZE
+	initialiseParameter()
+	
 
 	# Algorithm to find the knight's movement
 	if KnightPos[0] == TargetPos[0] and KnightPos[1] == TargetPos[1]:
 		print("Knight is already at the target position.")
 		return
-
+# 
 	knight_moves = []
 	queue = [(KnightPos[0], KnightPos[1])]
 	visited = [[False] * (N + 1) for _ in range(N + 1)]
